@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "metacollectapp",
+    "slug": "metacollectapp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

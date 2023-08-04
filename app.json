@@ -5,6 +5,29 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#037782"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#037782",
+      "translucent": false
+    },
+    "android": {
+      "splash": {
+        "backgroundColor": "#037782",
+        "resizeMode": "cover",
+        "xxxhdpi": "./assets/splash.png"
+      },
+      "androidStatusBar": {
+        "backgroundColor": "#037782"
+      },
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#037782"
+      }
+    }
   }
 }

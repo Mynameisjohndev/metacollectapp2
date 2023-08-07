@@ -1,0 +1,20 @@
+type tankListItem = {
+  DFIDITEMCOLETAAPP?: number;
+  DFIDITEMCOLETA?: string;
+  DFIDCOLETAAPP?: string;
+  DFIDCOLETA?: string;
+  DFATIVO?: string;
+  DFIDTANQUE?: number;
+  DFDESCTANQUE?: string;
+  DFIDLINHA?: number;
+  DFCOLETASELETIVA?: string;
+  DFNOMEPRODUTOR?: string;
+  DFNOMEPROPRIEDADE?: string;
+  DFNOMELINHA?: string;
+  DFMATRICULA?: string;
+  DFORDEMCOLETA?: string;
+  DFDATACOLETA?: string;
+  DFTIPOITEMCOLETA?: string;
+  typeCardColor?: 'C' | 'S' | 'N' | 'NN';
+};
+export { tankListItem };

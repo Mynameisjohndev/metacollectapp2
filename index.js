@@ -1,5 +1,6 @@
 import { registerRootComponent } from 'expo';
-
+import ReactNativeForegroundService from "@supersami/rn-foreground-service";
+ReactNativeForegroundService.register();
 import App from './App';
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);

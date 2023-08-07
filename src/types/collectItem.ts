@@ -1,0 +1,22 @@
+type CollectItem = {
+  DFIDITEMCOLETA?: string;
+  DFIDCOLETAAPP?: string | number;
+  DFIDCOLETA?: string;
+  DFIDTANQUE?: string | number;
+  DFQTDPREVISTA?: string;
+  DFQTDCOLETADA?: string | number;
+  DFREGUAFRENTE?: string;
+  DFREGUAATRAS?: string;
+  DFTEMPERATURA?: string;
+  DFHORACOLETA?: string;
+  DFALIZAROL?: 'Sim' | 'Não' | 'S' | 'N';
+  DFTIPOALIZAROL?: '72' | '74' | '76' | '80' | '82';
+  DFSENSORIAL?: 'Caracteristico' | 'Não caracteristico';
+  DFCOLETOUAMOSTRA?: string;
+  DFCOLETOULACRE?: string;
+  DFIDITEMCOLETAAPP?: string;
+  DFIDITEMCOLETAERP?: string;
+  DFTIPOITEMCOLETA?: 'C' | 'N' | 'S';
+  DFITEMREGISTROENVIADO?: 'N' | 'S';
+};
+export { CollectItem };

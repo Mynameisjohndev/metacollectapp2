@@ -35,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
         // packages.add(new MyReactNativePackage());
         packages.add(new LocationPackage());
         packages.add(new GetDeviceInfoPackage());
+        packages.add(new FlashlightPackage());
         return packages;
       }
 

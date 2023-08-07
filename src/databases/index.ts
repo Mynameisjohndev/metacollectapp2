@@ -1,0 +1,43 @@
+import { getDBConnection } from './conection';
+import { createTbBocaArmazenada } from './TBBOCAARMAZENADA/CREATE/createTbBocaArmazenada';
+import { createTbCarreteiro } from './TBCARRETEIRO/CREATE/createTbCarreteiro';
+import { createTbColeta } from './TBCOLETA/CREATE/createTbColeta';
+import { createTbConfiguracao } from './TBCONFIGURACAO/CREATE/createTbConfiguracao';
+import { createTbItemColeta } from './TBITEMCOLETA/CREATE/createTbItemColeta';
+import { createTbItemRegistro } from './TBITEMREGISTRO/CREATE/createTbItemRegistro';
+import { createTbLinha } from './TBLINHA/CREATE/createTbLinha';
+import { createTbProdutorColeta } from './TBPRODUTORCOLETA/CREATE/createTbProdutorColeta';
+import { createTbPropriedade } from './TBPROPRIEDADE/CREATE/createTbPropriedade';
+import { createTbRegional } from './TBREGIONAL/CREATE/createTbRegional';
+import { createTbRegistro } from './TBREGISTRO/CREATE/createTbRegistro';
+import { createTbSilo } from './TBSILO/CREATE/createTbSilo';
+import { createTbTanque } from './TBTANQUE/CREATE/createTbTanque';
+import { createTbTanqueVeiculo } from './TBTANQUEVEICULO/CREATE/createTbTanqueVeiculo';
+import { createTbUnidade } from './TBUNIDADE/CREATE/createTbUnidade';
+import { createTbVeiculo } from './TBVEICULO/CREATE/createTbVeiculo';
+import { createTbVinculoDispositivo } from './TBVINCULODISPOSITIVO/CREATE/createTbCarreteiro';
+import { createTbVinculoTanque } from './TBVINCULOTANQUE/CREATE/createTbVinculoTanque';
+
+const executeCreateSqliteTables = async () => {
+  const db = await getDBConnection();
+  createTbVinculoDispositivo(db);
+  createTbUnidade(db);
+  createTbSilo(db);
+  createTbVeiculo(db);
+  createTbCarreteiro(db);
+  createTbRegional(db);
+  createTbLinha(db);
+  createTbColeta(db);
+  createTbTanqueVeiculo(db);
+  createTbTanque(db);
+  createTbPropriedade(db);
+  createTbVinculoTanque(db);
+  createTbItemColeta(db);
+  createTbProdutorColeta(db);
+  createTbBocaArmazenada(db);
+  createTbRegistro(db);
+  createTbItemRegistro(db);
+  createTbConfiguracao(db);
+};
+
+export { executeCreateSqliteTables };

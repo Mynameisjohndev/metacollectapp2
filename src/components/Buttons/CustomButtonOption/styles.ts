@@ -1,21 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import { transparentize } from 'polished';
 import { ReactNode } from 'react';
-import { Dimensions } from 'react-native';
 import {
   RectButton,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
-import {
-  APP_FONT_REGULAR,
-  APP_FONT_SEMI_BOLD,
-  BUTTON_BORDER_RADIUS,
-  returnAdjustedFont,
-} from '../../../config';
-
-const { width } = Dimensions.get('window');
+import { APP_FONT_SEMI_BOLD, returnAdjustedFont } from '../../../config';
 
 type ICustomButtonOption = {
   selectColor?: 'primary' | 'secondary';

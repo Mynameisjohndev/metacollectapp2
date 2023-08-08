@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
 
 import {
   ContainerCalculatorHeader,

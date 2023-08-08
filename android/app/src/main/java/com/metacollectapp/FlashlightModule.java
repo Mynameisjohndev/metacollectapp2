@@ -1,66 +1,47 @@
 package com.metacollectapp;
 
 import android.content.Context;
-import android.hardware.Camera;
-import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
-import android.os.Build;
 
-import com.facebook.react.bridge.Callback;
+import androidx.annotation.NonNull;
+
+import com.facebook.react.bridge.Promise; 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 public class FlashlightModule extends ReactContextBaseJavaModule {
-    private final ReactApplicationContext myReactContext;
-    private Boolean isTorchOn = false;
-    private Camera camera;
+
+    private CameraManager cameraManager;
+    private boolean flashlightOn;
 
     public FlashlightModule(ReactApplicationContext reactContext) {
         super(reactContext);
-
-        // Need access to reactContext to check for camera
-        this.myReactContext = reactContext;
+        cameraManager = (CameraManager) reactContext.getSystemService(Context.CAMERA_SERVICE);
     }
 
+    @NonNull
     @Override
     public String getName() {
-        return "FlashlightModule";
+        return "Flashlight";
     }
 
     @ReactMethod
-    public void switchState(Boolean newState, Callback successCallback, Callback failureCallback) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CameraManager cameraManager =
-                    (CameraManager) this.myReactContext.getSystemService(Context.CAMERA_SERVICE);
-
-            try {
-                String cameraId = cameraManager.getCameraIdList()[0];
-                cameraManager.setTorchMode(cameraId, newState);
-                successCallback.invoke(true);
-            } catch (Exception e) {
-                String errorMessage = e.getMessage();
-                failureCallback.invoke("Error: " + errorMessage);
-            }
-        } else {
-            Camera.Parameters params;
-
-            if (newState && !isTorchOn) {
-                camera = Camera.open();
-                params = camera.getParameters();
-                params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                camera.setParameters(params);
-                camera.startPreview();
-                isTorchOn = true;
-            } else if (isTorchOn) {
-                params = camera.getParameters();
-                params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-
-                camera.setParameters(params);
-                camera.stopPreview();
-                camera.release();
-                isTorchOn = false;
-            }
-        }
+    public void toggleFlashlight(Promise promise) {
+    try {
+        String cameraId = cameraManager.getCameraIdList()[0];
+        cameraManager.setTorchMode(cameraId, true);
+        // if (flashlightOn) {
+        //     flashlightOn = false;
+        //     promise.resolve("Flashlight disabled");
+        // } else {      
+        //     cameraManager.setTorchMode(cameraId, true);
+        //     flashlightOn = true;      
+        //     promise.resolve("Flashlight enabled");
+        // }
+    } catch (Exception e) {
+        promise.reject(e);
     }
+}
+
 }

@@ -6,13 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { ActivityIndicator } from 'react-native';
-import {
-  RectButton,
-  RectButtonProps,
-  GestureHandlerRootView,
-  NativeViewGestureHandler,
-  RectButtonProperties,
-} from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
 import { BUTTON_BORDER_RADIUS } from '../../../config';
 import {

@@ -1,6 +1,4 @@
-import ImageIcon from '../../../assets/image.svg';
 import { RegistryItem } from '../../../types/registryItem';
-import { CustomEmptyImageReturn } from '../../CustomEmptyImageReturn';
 import { CustomImageReturn } from '../../CustomImageReturn';
 import { Title } from '../../global';
 import { CustomFormInputFixo } from '../../Input/CustomFormInputFixo';

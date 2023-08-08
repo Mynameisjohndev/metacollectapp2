@@ -8,30 +8,24 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import {
-  Alert,
-  PermissionStatus,
-  ActivityIndicator,
-  NativeModules,
-} from 'react-native';
+import { Alert, PermissionStatus, ActivityIndicator } from 'react-native';
 import Permission from 'react-native-permissions';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withRepeat,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 import { Svg, Defs, Rect, Mask } from 'react-native-svg';
 
-import FlashlightOff from '../../../assets/flashlightoff.svg';
-import FlashlightOn from '../../../assets/flashlighton.svg';
+// import FlashlightOff from '../../../assets/flashlightoff.svg';
+// import FlashlightOn from '../../../assets/flashlighton.svg';
 import { Tank } from '../../../types/tank';
+import { Scanner } from './Scanner';
 import {
   CustomReadQrcodeContainer,
-  CustomReadQrcodeError,
   CustomReadQrcodeFormat,
-  CustomReadQrcodeLightButton,
+  // CustomReadQrcodeLightButton,
   CustomReadQrcodeModal,
 } from './styles';
 
@@ -46,7 +40,6 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
   setQrcodeIsOpen,
   setReadTank,
 }) => {
-  const { FlashlightModule } = NativeModules;
   // const devices = useCameraDevices();
   // const device = devices.back;
   // const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
@@ -58,11 +51,13 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
   });
   const [permission, setPermission] = useState<PermissionStatus>(null);
   const [open, setOpen] = useState<boolean>(false);
-  const [light, setLight] = useState<boolean>(false);
-  const iconProp = {
-    width: 20,
-    height: 20,
-  };
+  // const [light, setLight] = useState<boolean>(false);
+  const [scanned, setScanned] = useState(false);
+
+  // const iconProp = {
+  //   width: 20,
+  //   height: 20,
+  // };
 
   const position = useSharedValue(-200);
   const barraStyle = useAnimatedStyle(() => {
@@ -71,15 +66,42 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
     };
   });
 
-  const onAndOffFlashlight = () => {
-    console.log('light');
-    setLight(!light);
-    FlashlightModule.switchState(!light);
-    // if (light) {
-    //   FlashlightModule.turnOn();
-    // } else {
-    //   FlashlightModule.turnOff();
-    // }
+  // const onAndOffFlashlight = () => {
+  //   setLight(!light);
+  // };
+
+  const getCameraPermission = (): Promise<PermissionStatus> => {
+    return new Promise(async resolve => {
+      const result = (await Permission.request(
+        'android.permission.CAMERA',
+      )) as PermissionStatus;
+      setPermission(result);
+      resolve(result);
+      return result;
+    });
+  };
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(data);
+    try {
+      const tank: Tank = JSON.parse(data);
+      if (!tank.DFIDTANQUE) {
+        return setError({
+          error: true,
+          message:
+            'As informaçõe fornecidas são inválidas, por favor leia um Qrcode válido!',
+        });
+      }
+      setTimeout(() => {
+        setReadTank(tank);
+        return setQrcodeIsOpen(false);
+      }, 100);
+    } catch (error) {
+      setError({
+        error: true,
+        message: 'Este tipo de qrcode não é suportado em nosso aplicativo!',
+      });
+    }
   };
 
   useEffect(() => {
@@ -92,17 +114,6 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
       true,
     );
   }, []);
-
-  const getCameraPermission = (): Promise<PermissionStatus> => {
-    return new Promise(async resolve => {
-      const result = (await Permission.request(
-        'android.permission.CAMERA',
-      )) as PermissionStatus;
-      setPermission(result);
-      resolve(result);
-      return result;
-    });
-  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -177,46 +188,6 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
     }
   }, [visible]);
 
-  const QrcodeArea = () => {
-    return (
-      <CustomReadQrcodeFormat>
-        <Svg>
-          <Defs>
-            <Mask id="mask" x="0" y="0" height="100%" width="100%">
-              <Rect height="100%" width="100%" fill="#fff" />
-              <Rect
-                x="50%"
-                y="50%"
-                width="250"
-                height="250"
-                fill="black"
-                rx="10"
-                transform="translate(-125, -125)"
-              />
-            </Mask>
-          </Defs>
-          <Rect
-            height="100%"
-            width="100%"
-            fill="rgba(0, 0, 0, 0.7)"
-            mask="url(#mask)"
-          />
-          <Rect
-            x="50%"
-            y="50%"
-            width="250"
-            height="250"
-            strokeWidth="6"
-            stroke="#fff"
-            rx="10"
-            fill="transparent"
-            transform="translate(-125, -125)"
-          />
-        </Svg>
-      </CustomReadQrcodeFormat>
-    );
-  };
-
   return (
     <CustomReadQrcodeModal
       {...{ visible, onRequestClose: () => setQrcodeIsOpen(false) }}
@@ -225,6 +196,7 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
         {permission && open ? (
           <>
             <BarCodeScanner
+              onBarCodeScanned={handleBarCodeScanned}
               style={{
                 width: '100%',
                 height: '100%',
@@ -236,7 +208,7 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
                 position: 'absolute',
               }}
             />
-            <QrcodeArea />
+            <Scanner />
             <Animated.View
               style={[
                 {
@@ -248,13 +220,13 @@ const CustomReadQrcode: FC<ICustomReadQrcode> = ({
                 barraStyle,
               ]}
             />
-            <CustomReadQrcodeLightButton onPress={onAndOffFlashlight}>
+            {/* <CustomReadQrcodeLightButton onPress={onAndOffFlashlight}>
               {light ? (
                 <FlashlightOn {...iconProp} />
               ) : (
                 <FlashlightOff {...iconProp} />
               )}
-            </CustomReadQrcodeLightButton>
+            </CustomReadQrcodeLightButton> */}
           </>
         ) : (
           <ActivityIndicator size="large" color="white" />
